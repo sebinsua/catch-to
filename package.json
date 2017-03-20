@@ -6,17 +6,35 @@
   "repository": "git@github.com:sebinsua/catch-to.git",
   "author": "Seb Insua <me@sebinsua.com>",
   "license": "MIT",
+  "keywords": [
+    "catch",
+    "promise",
+    "api",
+    "errors",
+    "map",
+    "boom",
+    "value"
+  ],
   "scripts": {
+    "commitmsg": "validate-commit-msg",
+    "prepush": "npm run -s test",
+    "push": "git push --follow-tags origin master",
     "format": "prettier-standard-formatter index.js test.js",
-    "test": "ava"
+    "test": "npm run -s format && ava",
+    "release": "npm run -s test && standard-version && npm publish"
+  },
+  "engines": {
+    "node": "^6"
   },
   "dependencies": {
-    "boom": "^4.2.0",
-    "debug": "^2.6.3",
-    "lodash": "^4.17.4"
+    "boom": "^4",
+    "lodash": "^4"
   },
   "devDependencies": {
-    "ava": "^0.18.2",
-    "prettier-standard-formatter": "^0.222222222222222.333333333333333"
+    "ava": "*",
+    "husky": "*",
+    "prettier-standard-formatter": "*",
+    "standard-version": "*",
+    "validate-commit-msg": "*"
   }
 }

@@ -1,7 +1,7 @@
 const test = require('ava')
 
-// const toError = require('.')
+// const toError = require('.')()
 
 test('should write a test', t => {
-  return t.true()
+  return t.true(true)
 })

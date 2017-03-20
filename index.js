@@ -12,7 +12,7 @@ const isErrorClass = potentialErrorClass =>
 const createErrorMatcher = err => some(errorClassOrFn => {
   if (!errorClassOrFn) {
     throw new Error(
-      'catchToError() was supplied a configuration object with a missing on property.'
+      'catchToError() was supplied a configuration with a missing on property.'
     )
   }
 
@@ -27,9 +27,7 @@ function createCatchToError (
   fallbackError = Boom.badImplementation,
   log = noop
 ) {
-  return function catchToError (
-    errorCategories = []
-  ) {
+  return function catchToError (errorCategories = []) {
     errorCategories = [].concat(errorCategories)
 
     return err => {
@@ -38,15 +36,23 @@ function createCatchToError (
       const errorMatcher = createErrorMatcher(err)
 
       for (let i = 0; i < errorCategories.length; i++) {
-        const errorsToTestFor = [].concat(errorCategories[i].on)
-        const errorCreatorOrError = errorCategories[i].throwError
+        const category = errorCategories[i]
+        const errorsToTestFor = [].concat(category.on)
 
         if (errorMatcher(errorsToTestFor)) {
-          const isError = typeof errorCreatorOrError !== 'function'
-
-          throw isError
-            ? errorCreatorOrError
-            : errorCreatorOrError(err)
+          if ('toError' in category || 'throwError' in category) {
+            const errorCreatorOrError = category.toError || category.throwError
+            const isError = typeof errorCreatorOrError !== 'function'
+            throw isError ? errorCreatorOrError : errorCreatorOrError(err)
+          } else if ('toValue' in category) {
+            const valueCreatorOrValue = category.toValue
+            const isValue = typeof valueCreatorOrValue !== 'function'
+            return isValue ? valueCreatorOrValue : valueCreatorOrValue(err)
+          } else {
+            throw new Error(
+              'catchToError() was supplied a configuration with a missing toError/toValue property.'
+            )
+          }
         }
       }
 
