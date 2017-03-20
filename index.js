@@ -1,9 +1,8 @@
 'use strict'
 
-const Boom = require('boom')
 const some = require('lodash/fp/some')
-
-const noop = () => undefined
+const noop = require('lodash/noop')
+const badImplementation = require('./bad-implementation')
 
 const isErrorClass = potentialErrorClass =>
   potentialErrorClass.name === 'Error' ||
@@ -23,10 +22,7 @@ const createErrorMatcher = err => some(errorClassOrFn => {
   return err instanceof errorClassOrFn
 })
 
-function createCatchToError (
-  fallbackError = Boom.badImplementation,
-  log = noop
-) {
+function createCatchToError (fallbackError = badImplementation, log = noop) {
   return function catchToError (errorCategories = []) {
     errorCategories = [].concat(errorCategories)
 

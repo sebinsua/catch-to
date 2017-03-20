@@ -19,15 +19,17 @@
     "commitmsg": "validate-commit-msg",
     "prepush": "npm run -s test",
     "push": "git push --follow-tags origin master",
-    "format": "prettier-standard-formatter index.js test.js",
+    "format": "prettier-standard-formatter *.js",
     "test": "npm run -s format && ava",
     "release": "npm run -s test && standard-version && npm publish"
   },
   "engines": {
     "node": "^6"
   },
+  "peerDependencies": {
+    "boom": "*"
+  },
   "dependencies": {
-    "boom": "^4",
     "lodash": "^4"
   },
   "devDependencies": {
