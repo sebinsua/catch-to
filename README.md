@@ -8,7 +8,7 @@ uses to describe its internal state, and instead want to respond with more gener
 
 ```js
 const Boom = require('boom')
-const toErrors = require('catch-to')( Boom.badImplementation )
+const toErrors = require('catch-to')(Boom.badImplementation)
 
 const login = require('./login')
 const {
