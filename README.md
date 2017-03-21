@@ -20,7 +20,7 @@ const {
 
 login('username', 'password')
   .catch(
-    toErrors( [
+    toErrors([
       {
         on: [ UnauthorizedLoginError, MissingAuthenticityTokenError ],
         toError: err => Boom.unauthorized(err)
@@ -33,7 +33,7 @@ login('username', 'password')
         on: AccountLockedError,
         toError: Boom.locked()
       }
-    ] )
+    ])
   )
 ```
 
@@ -41,7 +41,7 @@ login('username', 'password')
 
 ### `CreateCatchToSignature`: `(fallbackError?: ToErrorSignature, log?: LogSignature): CatchToSignature`
 
-### `CatchToSignature`: `(errorCategories: ErrorCategory|Array<ErrorCategory>): CatchSignature`
+### `CatchToSignature`: `(errorCategories?: ErrorCategory|Array<ErrorCategory>): CatchSignature`
 
 ### `CatchSignature`: `(error: Error): Error|any`
 
@@ -55,7 +55,7 @@ login('username', 'password')
 
 #### `ToValueSignature`: `(error: Error): any`
 
-#### `LogSignature`: `(message: ?string): void`
+#### `LogSignature`: `(message?: string): void`
 
 ## Install
 
