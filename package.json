@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "ava": "*",
-    "boom": "^4.3.0",
+    "boom": "^4.3.1",
     "husky": "*",
     "prettier-standard-formatter": "*",
     "sinon": "^2.1.0",

@@ -22,9 +22,13 @@ const createErrorMatcher = err => some(errorClassOrFn => {
   return err instanceof errorClassOrFn
 })
 
-function createCatchToError (fallbackError = badImplementation, log = noop) {
-  return function catchToError (errorCategories = []) {
+function createCatchToError (
+  fallbackError = badImplementation,
+  defaultLog = noop
+) {
+  return function catchToError (errorCategories = [], log) {
     errorCategories = [].concat(errorCategories)
+    log = log || defaultLog
 
     return err => {
       log(err)
