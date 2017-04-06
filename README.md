@@ -39,9 +39,9 @@ login('username', 'password')
 
 ## API
 
-### `CreateCatchToSignature`: `(fallbackError?: ToErrorSignature, log?: LogSignature): CatchToSignature`
+### `CreateCatchToSignature`: `(fallbackError?: ToErrorSignature, defaultLog?: LogSignature): CatchToSignature`
 
-### `CatchToSignature`: `(errorCategories?: ErrorCategory|Array<ErrorCategory>): CatchSignature`
+### `CatchToSignature`: `(errorCategories?: ErrorCategory|Array<ErrorCategory>, log?: LogSignature): CatchSignature`
 
 ### `CatchSignature`: `(error: Error): Error|any`
 
