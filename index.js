@@ -65,7 +65,7 @@ function createCatchToError (
 const errorHandlerWithoutFallback = createCatchToError(identity)
 
 const createCatchTo = on =>
-  (toError = identity) => errorHandlerWithoutFallback({ on, toError })
+  (toError = identity, log) => errorHandlerWithoutFallback({ on, toError }, log)
 
 module.exports = createCatchToError
 module.exports.createCatchTo = createCatchTo
