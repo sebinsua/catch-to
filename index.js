@@ -2,6 +2,7 @@
 
 const some = require('lodash/fp/some')
 const noop = require('lodash/noop')
+const identity = require('lodash/identity')
 const badImplementation = require('./bad-implementation')
 
 const isErrorClass = potentialErrorClass =>
@@ -61,4 +62,10 @@ function createCatchToError (
   }
 }
 
+const errorHandlerWithoutFallback = createCatchToError(identity)
+
+const createCatchTo = on =>
+  (toError = identity) => errorHandlerWithoutFallback({ on, toError })
+
 module.exports = createCatchToError
+module.exports.createCatchTo = createCatchTo
