@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/sebinsua/catch-to/compare/v0.3.0...v0.3.1) (2017-04-07)
+
+
+### Bug Fixes
+
+* **catch-to:** expose concise function ([497506b](https://github.com/sebinsua/catch-to/commit/497506b))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/sebinsua/catch-to/compare/v0.2.1...v0.3.0) (2017-04-05)
 
