@@ -4,7 +4,8 @@ const identity = require('lodash/identity')
 
 let badImplementation
 try {
-  badImplementation = require('boom').badImplementation
+  const Boom = require('boom')
+  badImplementation = err => err.isBoom ? err : Boom.badImplementation(err)
 } catch (err) {
   badImplementation = identity
 }
