@@ -1,9 +1,10 @@
 'use strict'
 
 const some = require('lodash/fp/some')
-const noop = require('lodash/noop')
 const identity = require('lodash/identity')
+const noop = require('lodash/noop')
 const badImplementation = require('./bad-implementation')
+const noopLogger = require('./noop-logger')
 
 const isErrorClass = potentialErrorClass =>
   potentialErrorClass.name === 'Error' ||
@@ -25,14 +26,17 @@ const createErrorMatcher = err => some(errorClassOrFn => {
 
 function createCatchToError (
   fallbackError = badImplementation,
-  defaultLog = noop
+  defaultLog = noopLogger
 ) {
   return function catchToError (errorCategories = [], log) {
     errorCategories = [].concat(errorCategories)
     log = log || defaultLog
 
+    const preLog = log.preLog || noop
+    const postLog = log.postLog || log || noop
+
     return err => {
-      log(err)
+      preLog(err)
 
       const errorMatcher = createErrorMatcher(err)
 
@@ -44,7 +48,13 @@ function createCatchToError (
           if ('toError' in category || 'throwError' in category) {
             const errorCreatorOrError = category.toError || category.throwError
             const isError = typeof errorCreatorOrError !== 'function'
-            throw isError ? errorCreatorOrError : errorCreatorOrError(err)
+            const newError = isError
+              ? errorCreatorOrError
+              : errorCreatorOrError(err)
+
+            postLog(newError)
+
+            throw newError
           } else if ('toValue' in category) {
             const valueCreatorOrValue = category.toValue
             const isValue = typeof valueCreatorOrValue !== 'function'
@@ -57,7 +67,11 @@ function createCatchToError (
         }
       }
 
-      throw fallbackError(err)
+      const newError = fallbackError(err)
+
+      postLog(newError)
+
+      throw newError
     }
   }
 }
@@ -65,7 +79,8 @@ function createCatchToError (
 const errorHandlerWithoutFallback = createCatchToError(identity)
 
 const createCatchTo = on =>
-  (toError = identity, log) => errorHandlerWithoutFallback({ on, toError }, log)
+  (toError = identity, log) =>
+    errorHandlerWithoutFallback({ on, toError }, log)
 
 module.exports = createCatchToError
 module.exports.createCatchTo = createCatchTo
