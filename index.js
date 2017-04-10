@@ -4,7 +4,7 @@ const some = require('lodash/fp/some')
 const identity = require('lodash/identity')
 const noop = require('lodash/noop')
 const badImplementation = require('./bad-implementation')
-const noopLogger = require('./noop-logger')
+const { noopLogger, logOriginalErrorWith } = require('./logger')
 
 const isErrorClass = potentialErrorClass =>
   potentialErrorClass.name === 'Error' ||
@@ -32,8 +32,8 @@ function createCatchToError (
     errorCategories = [].concat(errorCategories)
     log = log || defaultLog
 
-    const preLog = log.preLog || noop
-    const postLog = log.postLog || log || noop
+    const preLog = log.preLog || log || noop
+    const postLog = log.postLog || noop
 
     return err => {
       preLog(err)
@@ -84,3 +84,4 @@ const createCatchTo = on =>
 
 module.exports = createCatchToError
 module.exports.createCatchTo = createCatchTo
+module.exports.logOriginalErrorWith = logOriginalErrorWith
